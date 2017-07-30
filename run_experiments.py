@@ -1,4 +1,5 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 import sys
 import numpy as np
 import tensorflow as tf
@@ -245,4 +246,4 @@ def exp2(overwrite=False):
 
 if __name__ == "__main__":
 
-    exp2(True)
+    exp1(True)
