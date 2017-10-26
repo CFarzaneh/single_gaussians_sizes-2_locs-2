@@ -179,7 +179,7 @@ def exp1(overwrite=False):
 		numPlots = 0
 		nx = 20
 		x_values = np.linspace(-8, 8, nx)
-		iterations = 7000
+		iterations = 1000
 		interval = 10 # save fig of latency space every 10 batches
 		# Training cycle
 		canvas = np.empty((winSize,winSize*nx))
@@ -196,46 +196,45 @@ def exp1(overwrite=False):
 
 			avg_cost2 += cost / (batch_size*interval) * batch_size
 
+			if i%interval == 0:
+				fig = plt.figure()
+				axes = fig.add_subplot(2,1,1)
+				axes2 = fig.add_subplot(2,1,2)
+				#axes.set_aspect('equal')
+				axes.set_title("%d Iterations" % (n_samples + i*batch_size))
+				axes2.set_title("Average Cost = %f" % (avg_cost2))
+				avg_cost2 = 0.
+				axes.set_xlim((-8,8))
+				#axes.set_ylim((-8,8))
+				test_xs = synthData[10000:20000]
+				test_ys = synthDataLabels[10000:20000]
+				#mean, std = vae.getLatentParams(test_xs)
+				mean, std = vae.transform(test_xs)
+				latent_xs = mean + std*np.random.normal(size=std.shape)
+				bins = np.linspace(-8,8,100)
+				x1 = latent_xs[test_ys==0]
+				#embed()
+				axes.hist(x1, bins, alpha=0.5, label='right-small')
+				x2 = latent_xs[test_ys==1]
+				axes.hist(x2, bins, alpha=0.5, label='right-large')
+				x3 = latent_xs[test_ys==2]
+				axes.hist(x3, bins, alpha=0.5, label='left-small')
+				x4 = latent_xs[test_ys==3]
+				axes.hist(x4, bins, alpha=0.5, label='left-large')
+				axes.legend(loc='upper right')
 
-		if i%interval == 0:
-			fig = plt.figure()
-			axes = fig.add_subplot(2,1,1)
-			axes2 = fig.add_subplot(2,1,2)
-			#axes.set_aspect('equal')
-			axes.set_title("%d Iterations" % (epoch*n_samples + i*batch_size))
-			axes2.set_title("Average Cost = %f" % (avg_cost2))
-			avg_cost2 = 0.
-			axes.set_xlim((-8,8))
-			#axes.set_ylim((-8,8))
-			test_xs = synthData[10000:20000]
-			test_ys = synthDataLabels[10000:20000]
-			#mean, std = vae.getLatentParams(test_xs)
-			mean, std = vae.transform(test_xs)
-			latent_xs = mean + std*np.random.normal(size=std.shape)
-			bins = np.linspace(-8,8,100)
-			x1 = latent_xs[test_ys==0]
-			#embed()
-			axes.hist(x1, bins, alpha=0.5, label='right-small')
-			x2 = latent_xs[test_ys==1]
-			axes.hist(x2, bins, alpha=0.5, label='right-large')
-			x3 = latent_xs[test_ys==2]
-			axes.hist(x3, bins, alpha=0.5, label='left-small')
-			x4 = latent_xs[test_ys==3]
-			axes.hist(x4, bins, alpha=0.5, label='left-large')
-			axes.legend(loc='upper right')
+				ws = winSize
+				for i, xi in enumerate(x_values):
+					z_mu = np.array([[xi]]*vae.batch_size)
+					x_mean = vae.generate(z_mu)
+					canvas[:, (nx-i-1)*ws:(nx-i)*ws] = x_mean[0].reshape(ws, ws)
 
-			ws = winSize
-			for i, xi in enumerate(x_values):
-				z_mu = np.array([[xi]]*vae.batch_size)
-				x_mean = vae.generate(z_mu)
-				canvas[:, (nx-i-1)*ws:(nx-i)*ws] = x_mean[0].reshape(ws, ws)
+				axes2.imshow(canvas, origin="upper")
+				plt.tight_layout()
 
-			axes2.imshow(canvas, origin="upper")
-			plt.tight_layout()
-
-			fig.savefig(filename+'/latency_space_while_training/fig%04d.png' % numPlots)
-			numPlots += 1
-			plt.close()
+				fig.savefig(filename+'/latency_space_while_training/fig%04d.png' % numPlots)
+				numPlots += 1
+				plt.close()
 
 	# Display logs per epoch step
 	print("Iterations: ", '%04d' % (i), "cost=", "{:.9f}".format(avg_cost))
