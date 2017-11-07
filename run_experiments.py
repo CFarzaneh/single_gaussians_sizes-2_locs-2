@@ -13,9 +13,10 @@ from VAE_Models.architectures import DNN
 # Load Data
 synthData = np.load("data/single_gaussians_sizes=2_locs=2.npy")
 synthDataLabels = np.load("data/single_gaussians_sizes=2_locs=2_labels.npy")
-n_samples, input_dim = synthData.shape
+#n_samples, input_dim = synthData.shape
+winSize = 28
+input_dim = [winSize,winSize,1]
 n_samples = 700
-winSize = int(np.sqrt(input_dim)) # The window size
 
 np.random.seed(92090)
 tf.set_random_seed(16399)
@@ -139,12 +140,12 @@ def exp1(overwrite=False):
 	theDecoder = [500]*2 # num neurons in each layer of generator network
 
 	batch_size=100
-	learning_rate=0.0001
+	learning_rate=0.001
 
 	encoder = DNN(theEncoder, tf.nn.relu)
 	decoder = DNN(theDecoder, tf.nn.relu)
 
-	hyperParams = {'reconstruct_cost': 'bernoulli',
+	hyperParams = {'reconstruct_cost': 'gaussian',
 				   'learning_rate': learning_rate,
 				   'optimizer': tf.train.AdamOptimizer,
 				   'batch_size': batch_size
