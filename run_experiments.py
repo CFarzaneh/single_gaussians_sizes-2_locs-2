@@ -148,7 +148,8 @@ def exp1(overwrite=False):
 	hyperParams = {'reconstruct_cost': 'gaussian',
 				   'learning_rate': learning_rate,
 				   'optimizer': tf.train.AdamOptimizer,
-				   'batch_size': batch_size
+				   'batch_size': batch_size,
+				   'alpha': 0.0005
 				  }
 
 	'''
