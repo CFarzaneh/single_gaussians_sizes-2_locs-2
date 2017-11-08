@@ -59,7 +59,7 @@ def create_dataset():
     for i in tqdm.tqdm(range(numelems)):
         var_index = np.random.choice(range(len(variances)))
         mean_index = np.random.choice(range(len(means)))
-        mean = means[mean_index]
+        mean = means[mean_index] + np.random.normal() + np.random.normal()
         var = variances[var_index] + np.random.normal()
         labels[i] = label_ids[(mean_index, var_index)]
         dataset[i] = gauss2D(X, Y, mean=mean, var=var).flatten()

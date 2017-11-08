@@ -45,78 +45,34 @@ def addNoise(data, amp, scale):
 
     return noisyData
 
-def create_dataset(mymean, myvar, mysums, labels):
+def create_dataset():
 
     numelems = int(1e5)
     x = np.linspace(-14,14,28)
     y = np.linspace(-14,14,28)
     X, Y = np.meshgrid(x,y)
     dataset = np.ndarray((numelems,28*28))
-    labelss = np.ndarray((numelems))
-    label_ids = {(0,0):0, (0,1):1, (1,0):2, (1,1):3}
-
-    var_index = np.random.choice(range(len(myvar)))
-    
-    for i in tqdm.tqdm(range(numelems)):
-        mean = mymean
-        var = myvar + np.random.normal()
-        labelss[i] = label_ids[labels[0]]
-        dataset[i] = gauss2D(X, Y, mean=mean, var=var).flatten()
-
-    sum_data = np.sum(dataset, axis=1)
-    mysums.append([sum_data])
-
-    return mysums, dataset, labelss
-
-if __name__ == "__main__":
-    
+    labels = np.ndarray((numelems))
     variances = [np.array((5,5)), np.array((20,20))]
     means = [np.array((-7,7)), np.array((7,-7))]
-    mysums = []
-    labels = [[] for _ in range(100000)]
-    counter = 1
+    label_ids = {(0,0):0, (0,1):1, (1,0):2, (1,1):3}
+    for i in tqdm.tqdm(range(numelems)):
+        var_index = np.random.choice(range(len(variances)))
+        mean_index = np.random.choice(range(len(means)))
+        mean = means[mean_index]
+        var = variances[var_index] + np.random.normal()
+        labels[i] = label_ids[(mean_index, var_index)]
+        dataset[i] = gauss2D(X, Y, mean=mean, var=var).flatten()
+    np.save('single_gaussians_sizes=2_locs=2', dataset)
+    np.save('single_gaussians_sizes=2_locs=2_labels', labels)
 
-    for i in range(2):
-        for j in range(2):
-            labels[i] = [(i, j)]
-            mysums, data, labelss = create_dataset(means[i],variances[j], mysums, labels[i])
-            np.save('single_gaussians_sizes=2_locs=2_%d'%(counter), data)
-            np.save('single_gaussians_sizes=2_locs=2_labels_%d'%(counter), labelss)
-            counter+=1
 
-    print(mysums, len(mysums))
+if __name__ == "__main__":
+
+    create_dataset()
 
     #data = np.load('single_gaussians_sizes=2_locs=2.npy')
     #for i in range(10):
         #plt.imshow(data[i].reshape(28,28))
         #plt.show()
         #plt.clf()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
