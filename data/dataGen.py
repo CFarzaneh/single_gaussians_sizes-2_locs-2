@@ -74,26 +74,34 @@ def create_dataset():
 
     print("Generating groupOne (Right side, Multiple sizes)")
     for i in tqdm.tqdm(range(numelems)):
-        var_index = np.random.choice(range(len(variances)))
-        groupOne[i] = gauss2D(X, Y, mean=means[1], var=variances[var_index]).flatten()
+        if i%2 == 0:
+            groupOne[i] = gauss2D(X, Y, mean=means[1], var=variances[0]).flatten()
+        else:
+            groupOne[i] = gauss2D(X, Y, mean=means[1], var=variances[1]).flatten()
     np.save('groupOne', groupOne)
 
     print("Generating groupTwo (Left side, Multiple sizes)")
     for i in tqdm.tqdm(range(numelems)):
-        var_index = np.random.choice(range(len(variances)))
-        groupTwo[i] = gauss2D(X, Y, mean=means[0], var=variances[var_index]).flatten()
+        if i%2 == 0:
+            groupTwo[i] = gauss2D(X, Y, mean=means[0], var=variances[0]).flatten()
+        else:
+            groupTwo[i] = gauss2D(X, Y, mean=means[0], var=variances[1]).flatten()
     np.save('groupTwo', groupTwo)
 
     print("Generating groupThree (Multiple sides, Large size)")
     for i in tqdm.tqdm(range(numelems)):
-        mean_index = np.random.choice(range(len(means)))
-        groupThree[i] = gauss2D(X, Y, mean=means[mean_index], var=variances[1]).flatten()
+        if i%2 == 0:
+            groupThree[i] = gauss2D(X, Y, mean=means[0], var=variances[1]).flatten()
+        else:
+            groupThree[i] = gauss2D(X, Y, mean=means[1], var=variances[1]).flatten()
     np.save('groupThree', groupThree)
 
     print("Generating groupFour (Multiple sides, Small size)")
     for i in tqdm.tqdm(range(numelems)):
-        mean_index = np.random.choice(range(len(means)))
-        groupFour[i] = gauss2D(X, Y, mean=means[mean_index], var=variances[0]).flatten()
+        if i%2 == 0:
+            groupFour[i] = gauss2D(X, Y, mean=means[0], var=variances[0]).flatten()
+        else:
+            groupFour[i] = gauss2D(X, Y, mean=means[1], var=variances[0]).flatten()
     np.save('groupFour', groupFour)
 
     # data = np.load('groupFour.npy')
