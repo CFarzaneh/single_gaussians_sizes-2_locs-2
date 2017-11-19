@@ -75,33 +75,33 @@ def create_dataset():
     print("Generating groupOne (Right side, Multiple sizes)")
     for i in tqdm.tqdm(range(numelems)):
         if i%2 == 0:
-            groupOne[i] = gauss2D(X, Y, mean=means[1], var=variances[0]).flatten()
+            groupOne[i] = gauss2D(X, Y, mean=means[1], var=variances[0]+np.random.normal()).flatten()
         else:
-            groupOne[i] = gauss2D(X, Y, mean=means[1], var=variances[1]).flatten()
+            groupOne[i] = gauss2D(X, Y, mean=means[1], var=variances[1]+np.random.normal()).flatten()
     np.save('groupOne', groupOne)
 
     print("Generating groupTwo (Left side, Multiple sizes)")
     for i in tqdm.tqdm(range(numelems)):
         if i%2 == 0:
-            groupTwo[i] = gauss2D(X, Y, mean=means[0], var=variances[0]).flatten()
+            groupTwo[i] = gauss2D(X, Y, mean=means[0], var=variances[0]+np.random.normal()).flatten()
         else:
-            groupTwo[i] = gauss2D(X, Y, mean=means[0], var=variances[1]).flatten()
+            groupTwo[i] = gauss2D(X, Y, mean=means[0], var=variances[1]+np.random.normal()).flatten()
     np.save('groupTwo', groupTwo)
 
     print("Generating groupThree (Multiple sides, Large size)")
     for i in tqdm.tqdm(range(numelems)):
         if i%2 == 0:
-            groupThree[i] = gauss2D(X, Y, mean=means[0], var=variances[1]).flatten()
+            groupThree[i] = gauss2D(X, Y, mean=means[0], var=variances[1]+np.random.normal()).flatten()
         else:
-            groupThree[i] = gauss2D(X, Y, mean=means[1], var=variances[1]).flatten()
+            groupThree[i] = gauss2D(X, Y, mean=means[1], var=variances[1]+np.random.normal()).flatten()
     np.save('groupThree', groupThree)
 
     print("Generating groupFour (Multiple sides, Small size)")
     for i in tqdm.tqdm(range(numelems)):
         if i%2 == 0:
-            groupFour[i] = gauss2D(X, Y, mean=means[0], var=variances[0]).flatten()
+            groupFour[i] = gauss2D(X, Y, mean=means[0], var=variances[0]+np.random.normal()).flatten()
         else:
-            groupFour[i] = gauss2D(X, Y, mean=means[1], var=variances[0]).flatten()
+            groupFour[i] = gauss2D(X, Y, mean=means[1], var=variances[0]+np.random.normal()).flatten()
     np.save('groupFour', groupFour)
 
     # data = np.load('groupFour.npy')
