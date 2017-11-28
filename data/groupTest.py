@@ -23,6 +23,9 @@ def calculate_means():
 	print(s)
 	'''
 
+	U, s, Vh = linalg.svd(data)
+	print(Vh)
+
 	plt.imshow(tot_mean)
 	plt.show()
 
