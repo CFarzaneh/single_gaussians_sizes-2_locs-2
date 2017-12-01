@@ -51,7 +51,7 @@ def create_dataset():
     x = np.linspace(-14,14,28)
     y = np.linspace(-14,14,28)
     X, Y = np.meshgrid(x,y)
-    dataset = np.ndarray((numelems,28*28))
+    dataset = np.ndarray((1000,28*28))
 
     groupOne = np.ndarray((numelems,28*28))
     groupTwo = np.ndarray((numelems,28*28))
@@ -62,7 +62,7 @@ def create_dataset():
     variances = [np.array((5,5)), np.array((20,20))]
     means = [np.array((-7,7)), np.array((7,-7))]
     label_ids = {(0,0):0, (0,1):1, (1,0):2, (1,1):3}
-    for i in tqdm.tqdm(range(numelems)):
+    for i in tqdm.tqdm(range(1000)):
         var_index = np.random.choice(range(len(variances)))
         mean_index = np.random.choice(range(len(means)))
         mean = means[mean_index]
