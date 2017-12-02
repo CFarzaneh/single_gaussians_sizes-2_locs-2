@@ -9,21 +9,8 @@ def calculate_means():
     tot_data = np.reshape(data, (1000,28,28))
     tot_mean = tot_data.mean(0)
     
-    '''
-    Trying to obtain the eignvectors of the covariance matrix.
-    This will give us a basis for the eignspace, in which we can
-    obtain the largest eigenvector (and it's cooresponding eigenvalue)
-
-    covariance = np.cov(data)
-    print(covariance.shape)
-    print(covariance)
-    
-    U, s, Vh = linalg.svd(covariance)
-
-    print(s)
-    '''
     U, s, Vh = linalg.svd(data)
-    print(Vh.shape)
+    print(Vh)
 
     plt.imshow(tot_mean)
     plt.show()
